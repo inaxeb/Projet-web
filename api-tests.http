@@ -1,0 +1,78 @@
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+###Connexion (Login)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "user3",
+  "password": "pass123"
+}
+
+> {%
+  client.global.set("access_token", response.body.access_token)
+%}
+
+### 1. Créer une nouvelle tâche (Cas nominal)
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+Authorization: Bearer {{access_token}}
+
+{
+  "title": "Préparer le cours Angular",
+  "description": "Revoir les slides et le code NestJS",
+  "status": "DONE"
+}
+
+### 2. Créer une autre tâche (Pour avoir du volume)
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+Authorization: Bearer {{access_token}}
+
+{
+  "title": "Acheter des croissants",
+  "description": "Pour les étudiants lundi matin"
+}
+
+### 3. Tenter de créer une tâche invalide (Validation Test)
+# Doit retourner 400 Bad Request car 'title' est manquant
+POST {{baseUrl}}/tasks
+Content-Type: {{contentType}}
+
+{
+  "description": "Cette tâche n'a pas de titre"
+}
+
+###
+GET {{baseUrl}}/users
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+### 4. Récupérer toutes les tâches
+GET {{baseUrl}}/tasks
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+### 5. Récupérer une seule tâche (ID 1)
+GET {{baseUrl}}/tasks/4
+Accept: application/json
+Authorization: Bearer {{access_token}}
+
+### 6. Mettre à jour une tâche (Passer en DONE)
+# Remarque : On utilise PATCH (modification partielle)
+PATCH {{baseUrl}}/tasks/1
+Content-Type: {{contentType}}
+Authorization: Bearer {{access_token}}
+
+{
+    "status": "DONE"
+}
+
+### 7. Supprimer une tâche (ID 2)
+DELETE {{baseUrl}}/tasks/3
+Authorization: Bearer {{access_token}}
+
+### 8. Vérifier que la suppression a fonctionné (Doit retourner 404)
+GET {{baseUrl}}/tasks/2
+Authorization: Bearer {{access_token}}

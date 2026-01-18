@@ -1,0 +1,34 @@
+@baseUrl = http://localhost:3000
+
+### 1. Inscription (Register)
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass123"
+}
+
+### 2. Connexion (Login)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "james",
+  "password": "pass123"
+}
+
+> {%
+    client.global.set("access_token", response.body.access_token)
+ %}
+
+### 3. Accéder au profil (ou une route protégée)
+# Utilise le token récupéré à l'étape précédente
+GET {{baseUrl}}/tasks
+Authorization: Bearer {{access_token}}
+Content-Type: application/json
+
+### 4. Test d'erreur (Accès sans token)
+# Doit retourner 401 Unauthorized
+GET {{baseUrl}}/tasks
+Content-Type: application/json
