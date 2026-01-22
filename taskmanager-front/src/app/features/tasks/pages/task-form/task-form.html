@@ -1,0 +1,27 @@
+<div class="form-container">
+    <h2>{{ isEditMode() ? 'Modifier la tâche' : 'Nouvelle tâche' }}</h2>
+
+    @if (error) {
+    <div class="alert error">Une erreur est survenue.</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="field">
+            <label for="title">Titre</label>
+            <input id="title" type="text" formControlName="title" placeholder="Ex: Faire les courses" />
+        </div>
+
+        <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" formControlName="description" rows="5"
+                placeholder="Détails de la tâche..."></textarea>
+        </div>
+
+        <div class="actions">
+            <button type="submit" [disabled]="form.invalid">
+                {{ isEditMode() ? 'Mettre à jour' : 'Créer' }}
+            </button>
+            <a routerLink="/tasks" class="cancel">Annuler</a>
+        </div>
+    </form>
+</div>

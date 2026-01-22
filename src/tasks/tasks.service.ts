@@ -12,24 +12,24 @@ export class TasksService {
   constructor(
     @InjectRepository(Task)
     private tasksRepository: Repository<Task>,
-  ) {}
+  ) { }
 
 
   async create(createTaskDto: CreateTaskDto, user: any) {
     let targetId = user.userId;
 
-    // Si l'utilisateur est ADMIN et qu'il spécifie un ID cible, on utilise cet ID
+
     if (user.role === UserRole.ADMIN && createTaskDto.targetUserId) {
       targetId = createTaskDto.targetUserId;
     }
 
-    // On crée la tâche en l'associant à l'ID déterminé
-    const { targetUserId, ...taskData } = createTaskDto; // On retire targetUserId des données de la tâche
+
+    const { targetUserId, ...taskData } = createTaskDto;
     const task = this.tasksRepository.create({
       ...taskData,
       user: { id: targetId } as User,
     });
-    
+
     const savedTask = await this.tasksRepository.save(task);
     const { user: owner, ...result } = savedTask;
     return result;
@@ -39,7 +39,7 @@ export class TasksService {
     if (user.role === UserRole.ADMIN) {
       return this.tasksRepository.find({ order: { id: 'DESC' }, relations: ['user'] });
     }
-    // Si User, seulement les siennes
+
     return this.tasksRepository.find({
       where: { user: { id: user.userId } },
       order: { id: 'DESC' },
@@ -58,11 +58,11 @@ export class TasksService {
   }
 
   async update(id: number, updateTaskDto: UpdateTaskDto, user: any) {
-    const task = await this.findOne(id, user); // Vérifie l'existence et les droits
+    const task = await this.findOne(id, user);
 
     const { targetUserId, ...updateData } = updateTaskDto;
 
-    // Gestion de la réassignation (Admin seulement)
+
     if (targetUserId && user.role === UserRole.ADMIN) {
       task.user = { id: targetUserId } as User;
     }
@@ -72,7 +72,7 @@ export class TasksService {
   }
 
   async remove(id: number, user: any) {
-    const task = await this.findOne(id, user); // Vérifie l'existence et les droits
+    const task = await this.findOne(id, user);
     return this.tasksRepository.remove(task);
   }
 }

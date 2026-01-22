@@ -28,19 +28,19 @@ export class AllExceptionsFilter implements ExceptionFilter {
       message = responseBody.message || exception.message;
       error = responseBody.error || 'Http Exception';
     } else if (exception instanceof QueryFailedError) {
-      // Gestion spécifique des erreurs TypeORM / Postgres
+
       const err: any = exception;
-      // Code 23505 = Unique Violation (Doublon)
+
       if (err.code === '23505') {
         status = HttpStatus.CONFLICT;
         message = 'Username already exists';
         error = 'Conflict';
       } else {
-        // Autres erreurs SQL
+
         this.logger.error(`Database Error: ${err.message}`, err.stack);
       }
     } else {
-      // Autres erreurs inconnues
+
       if (exception instanceof Error) {
         this.logger.error(`Unexpected Error: ${exception.message}`, exception.stack);
       } else {

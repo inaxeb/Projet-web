@@ -1,0 +1,18 @@
+<div class="selector-container" [class.open]="isOpen()">
+    <button type="button" class="current-status" [style.background-color]="getColor(currentStatus())"
+        (click)="toggleDropdown($event)">
+        {{ getLabel(currentStatus()) }}
+        <span class="arrow">▼</span>
+    </button>
+
+    @if (isOpen()) {
+    <div class="dropdown-menu">
+        @for (option of statuses; track option.value) {
+        <button type="button" class="dropdown-item" (click)="selectStatus(option.value, $event)">
+            <span class="dot" [style.background-color]="option.color"></span>
+            {{ option.label }}
+        </button>
+        }
+    </div>
+    }
+</div>

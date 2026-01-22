@@ -14,6 +14,10 @@ export class User {
   @ApiProperty({ example: 'john_doe', description: 'Nom d\'utilisateur unique' })
   username: string;
 
+  @Column({ unique: true })
+  @ApiProperty({ example: 'john@test.com', description: 'Email unique' })
+  email: string;
+
   @Column()
   @Exclude()
   password: string;

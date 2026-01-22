@@ -10,7 +10,7 @@ describe('UsersService', () => {
     create: jest.fn(),
     save: jest.fn(),
     findOne: jest.fn(),
-    find: jest.fn(), // Ajout de find pour findAll
+    find: jest.fn(),
   };
 
   beforeEach(async () => {

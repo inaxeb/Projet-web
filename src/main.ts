@@ -16,7 +16,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  // 3. Config Swagger
+
   const config = new DocumentBuilder()
     .setTitle('Task API')
     .setDescription('API de gestion des tâches')

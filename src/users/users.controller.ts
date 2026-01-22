@@ -12,10 +12,10 @@ import { User } from './entities/user.entity';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
-  @Roles(UserRole.ADMIN) // Seul l'Admin peut voir la liste des utilisateurs
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: 'Lister tous les utilisateurs (Admin seulement)' })
   @ApiResponse({
     status: 200,

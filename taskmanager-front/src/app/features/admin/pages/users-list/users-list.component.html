@@ -1,0 +1,38 @@
+<div class="admin-container">
+    <h1>Administration des Utilisateurs</h1>
+
+    @if (users().length === 0) {
+    <p>Aucun utilisateur.</p>
+    } @else {
+    <table class="users-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of users(); track user.id) {
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.pseudo }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    <span class="role-badge" [class.admin]="user.role === 'ADMIN'">
+                        {{ user.role }}
+                    </span>
+                </td>
+                <td>
+                    @if (user.role !== 'ADMIN') {
+                    <button class="ban-btn" (click)="banUser(user)">Bannir</button>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    }
+</div>

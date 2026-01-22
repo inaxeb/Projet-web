@@ -1,0 +1,24 @@
+<div class="container">
+  <a routerLink="/tasks" class="back-link">← Retour à la liste</a>
+
+  @if (task(); as t) {
+    <div class="task-card">
+      <div class="header">
+        <h1>{{ t.title }}</h1>
+        <span class="status-badge" [class]="t.status">{{ t.status }}</span>
+      </div>
+
+      <div class="meta">
+        <p><strong>Assigné à :</strong> {{ t.assignedToUserId }}</p>
+        <p><strong>Créé le :</strong> {{ t.createdAt | date:'medium' }}</p>
+      </div>
+
+      <p class="description">{{ t.description }}</p>
+
+      <!-- Part 2: Comments -->
+      <app-comments-list [taskId]="t.id"></app-comments-list>
+    </div>
+  } @else {
+    <p>Chargement de la tâche...</p>
+  }
+</div>

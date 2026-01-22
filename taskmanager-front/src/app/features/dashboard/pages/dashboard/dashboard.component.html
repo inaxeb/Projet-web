@@ -1,0 +1,29 @@
+<div class="dashboard-container">
+    <h1>Tableau de Bord</h1>
+
+    <div class="kpi-grid">
+        <!-- Card 1: Total Tasks (Admin Only) -->
+        @if (authService.isAdmin()) {
+        <div class="kpi-card total">
+            <h3>Total Tâches</h3>
+            <p class="value">{{ totalTasksCount() }}</p>
+        </div>
+        }
+
+        <!-- Card 2: Done Tasks -->
+        <div class="kpi-card done">
+            <h3>Tâches Terminées</h3>
+            <p class="value">{{ doneTasksCount() }}</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" [style.width.%]="completionPercentage()"></div>
+            </div>
+            <p class="sub-text">{{ completionPercentage() }}% de complétion</p>
+        </div>
+
+        <!-- Card 3: My Tasks -->
+        <div class="kpi-card my-tasks">
+            <h3>Mes Tâches</h3>
+            <p class="value">{{ myTasksCount() }}</p>
+        </div>
+    </div>
+</div>

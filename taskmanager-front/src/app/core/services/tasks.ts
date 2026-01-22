@@ -13,7 +13,19 @@ export class TasksService {
     return this.http.get<readonly Task[]>(`${this.baseUrl}/tasks`);
   }
 
+  getById(id: string): Observable<Task> {
+    return this.http.get<Task>(`${this.baseUrl}/tasks/${id}`);
+  }
+
   deleteById(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/tasks/${id}`);
+  }
+
+  create(task: Partial<Task>): Observable<Task> {
+    return this.http.post<Task>(`${this.baseUrl}/tasks`, task);
+  }
+
+  update(id: string, task: Partial<Task>): Observable<Task> {
+    return this.http.patch<Task>(`${this.baseUrl}/tasks/${id}`, task);
   }
 }

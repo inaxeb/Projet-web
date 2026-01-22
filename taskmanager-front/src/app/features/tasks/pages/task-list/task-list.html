@@ -1,33 +1,52 @@
 <section class="page">
-  <h2>Mes tâches</h2>
+  <div class="header">
+    <h2>Mes tâches</h2>
+    <div class="filters">
+      <button [class.active]="filter() === 'ALL'" (click)="setFilter('ALL')">Toutes</button>
+      <button [class.active]="filter() === 'PENDING'" (click)="setFilter('PENDING')">À faire</button>
+      <button [class.active]="filter() === 'IN_PROGRESS'" (click)="setFilter('IN_PROGRESS')">En cours</button>
+      <button [class.active]="filter() === 'DONE'" (click)="setFilter('DONE')">Terminées</button>
+      <a routerLink="/tasks/new" class="create-btn">New Task</a>
+    </div>
+  </div>
 
   @if (loading()) {
-    <p>Chargement...</p>
+  <p>Chargement...</p>
   } @else if (error()) {
-    <p class="error">{{ error() }}</p>
-  } @else if (tasks().length === 0) {
-    <p>Aucune tâche.</p>
+  <p class="error">{{ error() }}</p>
+  } @else if (displayedTasks().length === 0) {
+  <p>Aucune tâche trouvée (Filtre: {{ filter() }}).</p>
   } @else {
-    <ul class="list">
-      @for (task of tasks(); track task.id) {
-        <li class="item" [class.done]="task.status === 'DONE'">
-          <div class="content">
-            <div class="title">{{ task.title }}</div>
-            <div class="desc">{{ task.description }}</div>
+  <ul class="list">
+    @for (task of displayedTasks(); track task.id) {
+    <li class="item" [class.done]="task.status === 'DONE'">
+      <div class="content">
+        <div class="status-wrapper">
+          <app-status-selector [currentStatus]="task.status" (statusChange)="changeStatus(task, $event)">
+          </app-status-selector>
+        </div>
 
-            <div class="meta">
-              <span>Créée : {{ task.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
-              <span>Modifiée : {{ task.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
-            </div>
-          </div>
+        <div class="details">
+          <a class="title link" [routerLink]="['/tasks', task.id]">
+            {{ task.title }}
+          </a>
 
-          <div class="actions">
-            <button type="button" class="danger" (click)="deleteTask(task)">
-              Supprimer
-            </button>
+          <div class="desc">{{ task.description }}</div>
+
+          <div class="meta">
+            <span>Créée : {{ task.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+            <span>Modifiée : {{ task.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
           </div>
-        </li>
-      }
-    </ul>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="danger" (click)="deleteTask(task)">
+          Supprimer
+        </button>
+      </div>
+    </li>
+    }
+  </ul>
   }
 </section>
